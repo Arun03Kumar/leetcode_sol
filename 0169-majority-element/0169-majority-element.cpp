@@ -17,8 +17,9 @@ public:
         int cnt = 0;
         for(auto x: nums) {
             if(x == element) cnt++;
+            if(cnt > (nums.size() / 2)) return element;
         }
-        if(cnt > (nums.size() / 2)) return element;
+        // if(cnt > (nums.size() / 2)) return element;
         return -1;
     }
 };
