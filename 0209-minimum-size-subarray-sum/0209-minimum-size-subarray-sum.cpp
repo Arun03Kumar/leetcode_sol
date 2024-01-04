@@ -11,7 +11,7 @@ public:
                 ans = min(ans, j - i);
                 sum -= nums[i++];
             }
-            j++;
+            
         }
         if(ans == nums.size() + 1) return 0;
         return ans;
