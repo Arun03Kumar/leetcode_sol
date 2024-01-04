@@ -6,11 +6,12 @@ public:
             // while(sum < target && j < nums.size()) {
             //     sum += nums[j++];
             // }
-            sum += nums[j++];
+            sum += nums[j];
             while(sum >= target && i < nums.size()) {
-                ans = min(ans, j - i);
+                ans = min(ans, j - i + 1);
                 sum -= nums[i++];
             }
+            j++;
         }
         return ans == INT_MAX ? 0 : ans;
     }
