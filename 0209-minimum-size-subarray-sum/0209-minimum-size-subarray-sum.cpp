@@ -3,9 +3,10 @@ public:
     int minSubArrayLen(int target, vector<int>& nums) {
         int i = 0, j = 0, ans = INT_MAX, sum = 0;
         while(j < nums.size()) {
-            while(sum < target && j < nums.size()) {
-                sum += nums[j++];
-            }
+            // while(sum < target && j < nums.size()) {
+            //     sum += nums[j++];
+            // }
+            sum += nums[j++];
             while(sum >= target && i < nums.size()) {
                 ans = min(ans, j - i);
                 sum -= nums[i++];
