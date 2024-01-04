@@ -13,6 +13,7 @@ public:
             }
             j++;
         }
-        return ans == nums.size() + 1 ? 0 : ans;
+        if(ans == nums.size() + 1) return 0;
+        return ans;
     }
 };
