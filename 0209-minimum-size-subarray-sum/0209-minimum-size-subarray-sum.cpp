@@ -6,9 +6,9 @@ public:
             // while(sum < target && j < nums.size()) {
             //     sum += nums[j++];
             // }
-            sum += nums[j];
+            sum += nums[j++];
             while(sum >= target && i < nums.size()) {
-                ans = min(ans, j - i + 1);
+                ans = min(ans, j - i);
                 sum -= nums[i++];
             }
             j++;
