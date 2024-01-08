@@ -11,14 +11,31 @@ public:
             //     ans = x;
             //     break;
             // }
-            int l = 0, r = x.size() - 1, flag = true;
-            while(l <= r) {
-                if(x[l++] != x[r--]) {
+            // int l = 0, r = x.size() - 1, flag = true;
+            // while(l <= r) {
+            //     if(x[l++] != x[r--]) {
+            //         flag = false;
+            //         break;
+            //     }
+            // }
+            // if(flag) return x;
+            for(int i=0; i<words.size(); i++){
+            int p =0;
+            int flag = true;
+            string nword = words[i];
+            int q = nword.length()-1;
+            while(p<q){
+                if(nword[p]!=nword[q]){
                     flag = false;
-                    break;
                 }
+                p++;
+                q--;
             }
-            if(flag) return x;
+            if(flag == true){
+                return words[i];
+            }
+        }
+        return "";
         }
         return "";
     }
