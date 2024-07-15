@@ -1,49 +1,58 @@
 class Solution {
 public:
-    void bfs(int r, int c, vector<vector<int>> &visited, vector<vector<char>> grid) {
-        // cout << visited[r][c] << " ";
+    vector<vector<int>> directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    void BFS(vector<vector<char>>& grid, vector<vector<int>> &visited, int i, int j) {
         queue<pair<int, int>> q;
-        q.push(make_pair(r, c));
-        visited[r][c] = 1;
+        visited[i][j] = 1;
+        q.push({i, j});
+
+        auto is_valid = [&](int p1, int p2) {
+            return p1 >= 0 && p1 < grid.size() && p2 >= 0 && p2 < grid[0].size();
+        };
+
         while(!q.empty()) {
-            auto front = q.front();
-        q.pop();
-        int x = front.first, y = front.second;
-        cout << x<<y << " ";
-        if(x+1 < grid.size() && grid[x+1][y] == '1' && visited[x+1][y] == 0) {
-                q.push(make_pair(x+1, y));
-                visited[x+1][y] = 1;
-            }
-            if(x-1 >= 0 && visited[x-1][y] == 0 && grid[x-1][y] == '1') {
-                q.push(make_pair(x-1, y));
-                visited[x-1][y] = 1;
-            }
-            if(y- 1 >= 0 && visited[x][y-1] == 0 && grid[x][y-1] == '1') {
-                q.push(make_pair(x, y-1));
-                visited[x][y-1] = 1;
-            }
-            if(y+1 < grid[0].size() && visited[x][y+1] == 0 && grid[x][y+1] == '1') {
-                q.push(make_pair(x, y+1));
-                visited[x][y+1] =1 ;
+            int x = q.front().first;
+            int y = q.front().second;
+            q.pop();
+
+            for(auto dir: directions) {
+                int dx = dir[0];
+                int dy = dir[1];
+
+                int new_x = x + dx;
+                int new_y = y + dy;
+
+                if(is_valid(new_x, new_y) && grid[new_x][new_y] == '1' && visited[new_x][new_y] == 0) {
+                    visited[new_x][new_y] = 1;
+                    q.push({new_x, new_y});
+                }
             }
         }
     }
     int numIslands(vector<vector<char>>& grid) {
-        vector<vector<int>> visited(grid.size(), vector<int>(grid[0].size(), 0));
-        
+        int m = grid.size();
+        int n = grid[0].size();
+
+        vector<vector<int>> visited(m, vector<int>(n, 0));
+
         int ans = 0;
-        for(int i = 0; i < grid.size(); i++) {
-            for(int j = 0; j < grid[i].size(); j++) {
-                // cout << visited[i][j] << " ";
+
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
                 if(visited[i][j] == 0 && grid[i][j] == '1') {
-                   bfs(i, j, visited, grid);
-                   
-                //    cout << i<<j << " ";
+                    BFS(grid, visited, i, j);
                     ans++;
                 }
-                 
             }
         }
+
+        // for(int i = 0; i < m; i++) {
+        //     for(int j = 0; j < n; j++) {
+        //         cout << visited[i][j] << " ";
+        //     }
+        //     cout << endl;
+        // }
+
         return ans;
     }
 };
