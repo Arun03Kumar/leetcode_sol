@@ -31,11 +31,31 @@ public:
 
         // Approach 2: memoization
 
-        vector<int> dp(nums.size() + 1, -1);
+        // vector<int> dp(nums.size() + 1, -1);
 
-        dp[0] = memoization(nums, 0, dp);
-        dp[1] = memoization(nums, 1, dp);
+        // dp[0] = memoization(nums, 0, dp);
+        // dp[1] = memoization(nums, 1, dp);
 
-        return max(dp[0], dp[1]);
+        // return max(dp[0], dp[1]);
+
+
+        // Approach 3: bottom up:
+
+        int n = nums.size();
+        vector<int> dp(n + 1, -1);
+
+        dp[0] = nums[0];
+        if(n > 1)
+            dp[1] = max(nums[1], nums[0]);
+
+        for(int i = 2; i < n; i++) {
+            int take = nums[i] + dp[i - 2];
+            int leave = dp[i - 1];
+
+            dp[i] = max(take, leave);
+        }
+
+        return dp[n - 1];
+
     }
 };
