@@ -36,14 +36,37 @@ public:
         
         // Approach 2: memoization
 
-        if(nums.size() == 1) return nums[0];
+        // if(nums.size() == 1) return nums[0];
 
-        vector<int> dp(nums.size() + 1, -1);
-        int a = memoization(nums, 0, nums.size() - 2, dp);
-        vector<int> dp2(nums.size() + 1, -1);
-        int b = memoization(nums, 1, nums.size() - 1, dp2);
-        return max(a, b);
+        // vector<int> dp(nums.size() + 1, -1);
+        // int a = memoization(nums, 0, nums.size() - 2, dp);
+        // vector<int> dp2(nums.size() + 1, -1);
+        // int b = memoization(nums, 1, nums.size() - 1, dp2);
+        // return max(a, b);
         // return max(dp[0], dp[1]);
+
+
+        // Approach 3: bottom up
+
+        int n = nums.size();
+        if (n == 1) return nums[0];
+        if (n == 2) return max(nums[0], nums[1]);
+
+        auto rob_range = [&](int start, int end) {
+            vector<int> dp(end - start + 1, 0);
+            dp[0] = nums[start];
+            dp[1] = max(nums[start], nums[start + 1]);
+            for (int i = 2; i <= end - start; ++i) {
+                dp[i] = max(dp[i - 1], nums[start + i] + dp[i - 2]);
+            }
+            return dp[end - start];
+        };
+
+        int max1 = rob_range(0, n - 2);
+        int max2 = rob_range(1, n - 1);
+
+        return max(max1, max2);
+
 
     }
 };
