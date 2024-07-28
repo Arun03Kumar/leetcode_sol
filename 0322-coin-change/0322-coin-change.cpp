@@ -44,9 +44,25 @@ public:
 
 
         // Approach 2: memoization
+        // vector<int> dp(amount + 1, INT_MAX);
+        // memoization(coins, amount, dp);
+        // return dp[amount] != INT_MAX ? dp[amount] : 0;
+
+        // Approach 3: Bottom up
+
         vector<int> dp(amount + 1, INT_MAX);
-        memoization(coins, amount, dp);
-        return dp[amount] != INT_MAX ? dp[amount] : 0;
-        // return dp[amount] != INT_MAX ? dp[amount] : -1;
+        dp[0] = 0;
+
+        for(int i = 1; i <= amount; i++) {
+            int temp = INT_MAX;
+            for(int j = 0; j < coins.size(); j++) {
+                if(i - coins[j] >= 0) {
+                    if(dp[i - coins[j]] != INT_MAX)
+                        dp[i] = min(dp[i], 1 + dp[i - coins[j]]);
+                }
+            }
+        }
+
+        return dp[amount] != INT_MAX ? dp[amount] : -1;
     }
 };
