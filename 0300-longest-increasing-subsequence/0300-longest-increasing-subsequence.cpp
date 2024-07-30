@@ -48,10 +48,37 @@ public:
         // since prev and idx is changing hence we need to create a 2d ap array
         // and we need to add check for all where prev == -1, so we need to take care for that
 
-        int n = nums.size();
-        vector<vector<int>> dp(n + 1, vector<int>(n + 1, -1));
-        return memoization(nums, dp, 0, -1);
-        return dp[0][0];
+        // int n = nums.size();
+        // vector<vector<int>> dp(n + 1, vector<int>(n + 1, -1));
+        // return memoization(nums, dp, 0, -1);
+        // return dp[0][0];
 
+
+
+        // Approach 3: bottom-up
+
+        // dp[i] this state will tell the LIS end at index i
+        // since each element is itself a subsequence so we can initialize dp array with 1
+        // dp array ko 1 se initialize kr do, phir hr ek element k liye uske piche jitte bhi elements h uspr iterate kro ar dp[i] ko update kro based on condition. 
+
+        int n = nums.size();
+        vector<int> dp(n + 1, 1);
+
+        int ans = INT_MIN;
+
+        for(int i = 0; i < n; i++) {
+            
+            for(int j = 0; j < i; j++) {
+
+                if(nums[j] >= nums[i]) continue;
+
+                dp[i] = max(dp[i], 1 + dp[j]);
+                
+
+            }
+            ans = max(ans, dp[i]);
+        }
+
+        return ans;
     }
 };
