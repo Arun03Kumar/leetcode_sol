@@ -39,11 +39,33 @@ public:
 
     int minimumTotal(vector<vector<int>>& triangle) {
 
+        // Approach 1: recursion
         // return recursion(triangle, 0, 0);
 
-        vector<vector<int>> dp(201, vector<int>(201, -1));
-        return memoization(triangle, dp, 0, 0);
+
+        // Approach 2: memoization
+        // vector<vector<int>> dp(201, vector<int>(201, -1));
+        // return memoization(triangle, dp, 0, 0);
 
 
+        // Approach 3: bottom up
+        int rows = triangle.size();
+        vector<int> dp(rows + 1, -1);
+        dp[0] = triangle[0][0];
+
+        int idx = 0;
+        for(int i = 1; i < rows; i++) {
+            int min_el = triangle[i][idx];
+            if(idx + 1 < triangle[i].size()) {
+                min_el = min(min_el, triangle[i][idx + 1]);
+                if(triangle[i][idx + 1] < triangle[i][idx]) {
+                    idx = idx + 1;
+                }
+            }
+
+            dp[i] = dp[i - 1] + min_el;
+        }
+
+        return dp[rows - 1];
     }
 };
