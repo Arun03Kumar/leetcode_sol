@@ -31,8 +31,20 @@ public:
     long long mostPoints(vector<vector<int>>& questions) {
         // return recursion(questions, 0);
 
+        // int n = questions.size();
+        // vector<long long> dp(n + 1, -1);
+        // return memoization(questions, dp, 0);
+
         int n = questions.size();
-        vector<long long> dp(n + 1, -1);
-        return memoization(questions, dp, 0);
+        vector<long long> dp(20001, 0);
+        // dp[0] = questions[0][0];
+
+        for(int i = n - 1; i >= 0; i--) {
+            int points = questions[i][0];
+            int brain_power = questions[i][1];
+            dp[i] = max(points + dp[i + 1 + brain_power], dp[i + 1]);
+        }
+
+        return dp[0];
     }
 };
