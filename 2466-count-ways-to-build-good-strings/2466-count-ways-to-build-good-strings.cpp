@@ -51,7 +51,34 @@ public:
     int countGoodStrings(int low, int high, int zero, int one) {
         // return recursion(low, high, zero, one, "");
 
-        vector<int> dp(high + 1, -1);
-        return memoization(low, high, zero, one, dp, 0);
+        // Approach 2: memoization
+        // vector<int> dp(high + 1, -1);
+        // return memoization(low, high, zero, one, dp, 0);
+
+
+        // Approach 3: bottom up
+        // first we form a dp array and fill it.
+        // dp[i] tells number of good string of size i.
+        // so we form all good strings and after sum it from low to high.
+
+        // if adding x zeros or x ones to some string will form a good string then we can add from dp[i - x] so this will give ans for dp[i]
+
+        vector<int> dp(high + 1, 0);
+        dp[0] = 1;
+        for(int i = 1; i <= high; i++) {
+            if(i - zero >= 0) {
+                dp[i] = (dp[i] % M + dp[i - zero] % M) % M;
+            }
+            if(i - one >= 0) {
+                dp[i] = (dp[i] % M + dp[i - one] % M) % M;
+            }
+        }
+
+        int ans = 0;
+        for(int i = low; i <= high; i++) {
+            ans = (ans % M + dp[i] % M) % M;   
+        }
+
+        return ans;
     }
 };
