@@ -24,6 +24,7 @@ public:
         }
     }
     bool isSameTree(TreeNode* p, TreeNode* q) {
+        // check if both nodes are null pointer then it is valid but if only one is null pointer then it is invalid
         return helper(p, q);
     }
 };
