@@ -1,5 +1,6 @@
 class Solution {
 public:
+    const int M = 1e9 + 7;
     int recursion(int low, int high, int zero, int one, string ans) {
         if(ans.size() > high) return 0;
         // if(ans.size() >= low && ans.size() <= high) return 1;
@@ -43,7 +44,7 @@ public:
         int ones = memoization(low, high, zero, one, dp, length + one);
         int zeros = memoization(low, high, zero, one, dp, length + zero);
 
-        return dp[length] = should_add_one + ones + zeros;
+        return dp[length] = (should_add_one + ones + zeros) % M;
 
     }
 
