@@ -1,6 +1,6 @@
 class Solution {
 public:
-    bool is_pred(string a, string b) {
+    bool is_pred(const string &a, const string &b) {
         int m = a.size(), n = b.size();
         if(m >= n || n - m != 1) return false;
 
@@ -54,7 +54,7 @@ public:
         // previous word should have one less length than current and it should be subsequence of the current word.
         // to check the subsequence we can take pointers which points to the character of each word and if both points to same character then we can increase the pointers and we can check if smaller word pointer reached at end.
 
-        auto comparator = [](string x, string y) {
+        auto comparator = [](const string &x, const string &y) {
             return x.size() < y.size();
         };
         sort(words.begin(), words.end(), comparator);
