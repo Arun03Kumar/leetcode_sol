@@ -1,19 +1,30 @@
 class Solution {
 public:
-    int recursion(vector<int>& scores, vector<int>& ages, int idx, int prev) {
-        if(idx >= scores.size()) return 0;
+    int bestTeamScore(vector<int>& scores, vector<int>& ages) {
+        int n = scores.size();
 
-        int take = 0;
-        if(prev == -1 || (ages[idx] >= ages[prev]) || (ages[idx] < ages[prev] && scores[idx] <= scores[prev])) {
-            take = scores[idx] + recursion(scores, ages, idx + 1, idx);
+        vector<pair<int, int>> combined;
+        for(int i = 0; i < n; i++) {
+            combined.push_back({ages[i], scores[i]});
         }
 
-        int skip = recursion(scores, ages, idx + 1, prev);
+        sort(begin(combined), end(combined));
 
-        return max(take, skip);
-    }
+        vector<int> dp(n + 1, 0);
+        int ans = INT_MIN;
+        for(int i = 0; i < n; i++) {
+           dp[i] = combined[i].second;
 
-    int bestTeamScore(vector<int>& scores, vector<int>& ages) {
-        return recursion(scores, ages, 0, -1);
+           for(int j = 0; j < i; j++) {
+
+                if(combined[j].second <= combined[i].second) {
+                    dp[i] = max(dp[i], combined[i].second + dp[j]);
+                }
+           } 
+
+           ans = max(ans, dp[i]);
+        }
+
+        return ans;
     }
 };
