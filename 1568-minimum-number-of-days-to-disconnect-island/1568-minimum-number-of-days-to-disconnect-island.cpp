@@ -34,6 +34,10 @@ public:
     } 
 
     int minDays(vector<vector<int>>& grid) {
+        // so based on observation it is possible to make graph disconnected in either 0, 1 or 2 days, if there is 1 or 0 land component then number of days is 0.
+        // then we again check on traversing each grid element and make it to 0 a water then again check number of land if it is 2 then return 1.
+        // else return 2 because any grid can be disconnected in 2 days just make diagonal elements 0. as given in example.
+        
         m = grid.size();
         n = grid[0].size();
         int islands = numberOfIslandsDFS(grid);
