@@ -36,7 +36,37 @@ public:
 
 
         // Approach 2: memoization
-        vector<vector<int>> dp(1001, vector<int>(1001, -1));
-        return 1 + memoization(n, dp, 1, 1);
+        // vector<vector<int>> dp(1001, vector<int>(1001, -1));
+        // return 1 + memoization(n, dp, 1, 1);
+
+
+        // Approach 3: bottom up + Greedy
+        // if n == 30 then if we copy the 15 As and paste then it will take less operations hence we are going greedly here.
+        // we are filling it bottom up
+        // we are finding a factor which is half if it is not odd then we are reducing one till it gets the value;
+        // ex. n == 27 -> n/2 = 13 will be factor but it is not fully divisible hence, 13-1 = 12 but still we cant divide 27 with 12 hence recude till 9.
+        vector<int> dp(n + 1);
+        dp[0] = dp[1] = 0;
+        dp[2] = 2;
+
+        for(int i = 3; i <= n; i++) {
+
+            int factor = i / 2;
+            while(factor >= 1) {
+
+                if(i % factor == 0) {
+                    int copy = 1;
+                    int paste = (i / factor) - 1;
+
+                    dp[i] = dp[factor] + copy + paste;
+                    break;
+                }
+                else {
+                    factor--;
+                }
+            }
+        }
+
+        return dp[n];
     }
 };
