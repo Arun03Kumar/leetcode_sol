@@ -34,7 +34,13 @@ public:
 
         string temp_str = "";
 
-        for(auto x: temp) temp_str += 'a' + x;
+        for(int k = 0; k < 26; k++) {
+            if(temp[k] == 0) continue;
+
+            int freq = temp[k];
+            string new_str = string(freq, k + 'a');
+            temp_str += new_str;
+        }
 
         mp[temp_str].push_back(strs[i]);
     }
