@@ -24,7 +24,7 @@ public:
 
     // Approach 2: it is simillar to the above but we will now store the strings in the array based on indexes because it is given that the all string are lower case letters.
 
-    map<vector<int>, vector<string>> mp;
+    unordered_map<string, vector<string>> mp;
 
     for(int i = 0; i < strs.size(); i++) {
         vector<int> temp(26, 0);
@@ -32,7 +32,11 @@ public:
             temp[x - 'a']++;
         }
 
-        mp[temp].push_back(strs[i]);
+        string temp_str = "";
+
+        for(auto x: temp) temp_str += 'a' + x;
+
+        mp[temp_str].push_back(strs[i]);
     }
 
     vector<vector<string>> ans;
