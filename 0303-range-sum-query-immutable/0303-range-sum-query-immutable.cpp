@@ -1,22 +1,22 @@
 class NumArray {
 public:
-    vector<int> arr;
+    vector<int> prefix_sum;
 public:
     NumArray(vector<int>& nums) {
-        arr.resize(nums.size());
-        arr[0] = nums[0];
+        prefix_sum.resize(nums.size());
+        prefix_sum[0] = nums[0];
         for(int i = 1; i < nums.size(); i++) {
-            arr[i] = nums[i] + arr[i - 1];
+            prefix_sum[i] = nums[i] + prefix_sum[i - 1];
         }
 
-        for(int x: arr) {
-            cout << x << " ";
-        }
+        // for(int x: arr) {
+        //     cout << x << " ";
+        // }
     }
     
     int sumRange(int left, int right) {
-        int l = left > 0 ? arr[left - 1] : 0;
-        return arr[right] - l;
+        int l = left > 0 ? prefix_sum[left - 1] : 0;
+        return prefix_sum[right] - l;
     }
 };
 
