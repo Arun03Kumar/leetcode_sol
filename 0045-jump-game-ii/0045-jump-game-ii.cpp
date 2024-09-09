@@ -1,22 +1,37 @@
 class Solution {
 public:
-int solve(vector<int> &arr, int idx, int n, vector<int> &dp, int count) {
-   if(idx == n) return dp[n] = 0;
-   if(arr[idx] == 0) return dp[idx] = 9999999;
-   int temp = INT_MAX;
-   for(int i = 1; i<= arr[idx]; i++){
-       int x;
-       if(idx+i <= n){
-           if(dp[idx+i] != -1) x = dp[idx+i];
-           else  x =  solve(arr, idx+i, n, dp, count);
-       }
-       temp = min(x+1, temp);
-   }
-   return dp[idx] = temp;
-}
+    int recursion(vector<int>& nums, int idx) {
+        if(idx >= nums.size() - 1) return 0;
+
+        int temp = 10001;
+
+        for(int i = 1; i <= nums[idx]; i++) {
+            temp = min(temp, recursion(nums, idx + i));
+        }
+        return temp + 1;
+    }
+
+    int memoization(vector<int> &nums, int idx, vector<int> &dp) {
+
+        if(idx >= nums.size() - 1) return 0;
+
+        if(dp[idx] != -1) return dp[idx];
+
+        int temp = 10001;
+        for(int i = 1; i <= nums[idx]; i++) {
+            temp = min(temp, memoization(nums, idx + i, dp));
+        }
+
+        return dp[idx] = (temp + 1);
+
+    }
+ 
     int jump(vector<int>& nums) {
-        vector<int> dp(nums.size(), -1);
-        int x = solve(nums, 0, nums.size() - 1, dp, 0);
-        return x;
+        // int ans = recursion(nums, 0);
+        // return ans;
+
+        int n = nums.size();
+        vector<int> dp(n, -1);
+        return memoization(nums, 0, dp);
     }
 };
