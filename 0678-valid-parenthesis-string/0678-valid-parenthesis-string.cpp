@@ -51,31 +51,92 @@ public:
 
 
         // Approach 3: Bottom-up
+        // int n = s.size();
+        // vector<vector<bool>> dp(n + 1, vector<bool>(n + 1, false));
+        // dp[n][0] = true; // when there is empty string and no open brackets then it will be true this is our base case
+
+        // for(int i = n - 1; i >= 0; i--) {
+        //     for(int open = 0; open <= n; open++) {
+
+        //         bool is_valid = false;
+        //         if(s[i] == '(') {
+        //             is_valid |= dp[i + 1][open + 1];
+        //         }
+        //         else if(s[i] == '*') {
+        //             is_valid |= dp[i + 1][open + 1];
+        //             is_valid |= dp[i + 1][open];
+        //             if(open > 0) is_valid |= dp[i + 1][open - 1];
+        //         }
+        //         else {
+        //             if(open > 0) is_valid |= dp[i + 1][open - 1];
+        //         }
+
+        //         dp[i][open] = is_valid;
+        //     }
+
+        // }
+
+        // return dp[0][0];
+
+
+
+        // Approach 4: stack(wrong approach)
+        // just maintain the count of *, if ')' came then check if top of stack is '(' then simply pop else if stack is empty but count of * till now is not 0 then it means * can be used as '('.
+
+        // if we just do like this then all test cases won't pass because there is one possibility in which we have a  open bracket remaining in the array and also we have some * count [*(())(*] dry run this example
+        // but we need to also check if the astrix came after that open bracket hence we need to also store the index and we need to store the * in another stack
+
+        // int n = s.size();
+        // stack<char> st;
+        // int count = 0;
+
+        // for(char &ch: s) {
+        //     if(ch == '(') st.push(ch);
+        //     else if(ch == ')') {
+        //         if(st.empty() && count == 0) return false;
+        //         else if(st.empty() && count != 0) {
+        //             count--;
+        //         }
+        //         else {
+        //             st.pop();
+        //         }
+        //     }
+        //     else {
+        //         count++;
+        //     }
+        // }
+
+        // return st.empty();
+
+
+        // stack correct approach
         int n = s.size();
-        vector<vector<bool>> dp(n + 1, vector<bool>(n + 1, false));
-        dp[n][0] = true; // when there is empty string and no open brackets then it will be true this is our base case
 
-        for(int i = n - 1; i >= 0; i--) {
-            for(int open = 0; open <= n; open++) {
+        stack<int> bracket_st; // int to store the index 
+        stack<int> astrix_st;
 
-                bool is_valid = false;
-                if(s[i] == '(') {
-                    is_valid |= dp[i + 1][open + 1];
-                }
-                else if(s[i] == '*') {
-                    is_valid |= dp[i + 1][open + 1];
-                    is_valid |= dp[i + 1][open];
-                    if(open > 0) is_valid |= dp[i + 1][open - 1];
-                }
-                else {
-                    if(open > 0) is_valid |= dp[i + 1][open - 1];
-                }
+        for(int i = 0; i < n; i++) {
 
-                dp[i][open] = is_valid;
+            if(s[i] == '(') bracket_st.push(i);
+            else if(s[i] == '*') astrix_st.push(i);
+            else {
+                // if both stack is empty 
+                if(bracket_st.empty() && astrix_st.empty()) return false;
+                // bracket stack is empty but astrix stack is not
+                else if(bracket_st.empty() && !astrix_st.empty()) astrix_st.pop();
+                else bracket_st.pop();
             }
 
         }
 
-        return dp[0][0];
+        while(!bracket_st.empty() && !astrix_st.empty()) {
+            // if index of '(' is greater than then * index it means it * has came before the open bracket and it can't balance the open bracket.
+            if(bracket_st.top() > astrix_st.top()) return false;
+
+            bracket_st.pop();
+            astrix_st.pop();
+        }
+
+        return bracket_st.empty();
     }
 };
