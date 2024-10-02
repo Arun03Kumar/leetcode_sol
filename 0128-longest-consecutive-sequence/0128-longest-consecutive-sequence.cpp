@@ -12,10 +12,16 @@ public:
         for(int i = 0; i < nums.size(); i++) {
             int prev = nums[i] - 1, next = nums[i] + 1;
 
-            while(st.find(prev) != st.end()) prev -= 1;
-            while(st.find(next) != st.end()) next += 1;
+            // while(st.find(prev) != st.end()) prev -= 1;
+            int temp = 1;
+            if(st.find(prev) == st.end()) {
+                while(st.find(next) != st.end()) {
+                    next += 1;
+                    temp++;
+                }
+            }
 
-            ans = max(ans, next - prev - 1);
+            ans = max(ans, temp);
         }
 
         return ans;
