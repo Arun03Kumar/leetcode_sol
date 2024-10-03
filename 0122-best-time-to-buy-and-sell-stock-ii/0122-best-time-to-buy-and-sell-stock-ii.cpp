@@ -55,29 +55,63 @@ public:
         // Approach 3: bottom up / tabulation
         // bottom up is just copying pasting of memoization no need to think just change the variables
 
+        // int n = prices.size();
+        // vector<vector<int>> dp(n + 1, vector<int>(2, 0));
+        // dp[n][0] = dp[n][1] = 0;
+
+        // for(int i = n - 1; i >= 0; i--) {
+        //     for(int j = 0; j < 2; j++) {
+                
+        //         int buy = 0, sell = 0;
+        //         if(j == 0) {
+        //             int buy1 = -prices[i] + dp[i + 1][1];
+        //             int buy_skip = 0 + dp[i + 1][0];
+        //             buy = max(buy1, buy_skip);
+        //         }
+        //         else {
+        //             int sell1 = prices[i] + dp[i + 1][0];
+        //             int skip_sell = 0 + dp[i + 1][1];
+        //             sell = max(sell1, skip_sell);
+        //         }
+                
+        //         dp[i][j] = max(buy, sell);
+        //     }
+        // }
+
+        // return dp[0][0];
+
+
+        // Approach 4: space optimization
+        // in the tabulation we can see that index i values are depends upon index i + 1 values in the dp array so we need only two variables to store the i + 1 index values and we will update it for each iteration
+
         int n = prices.size();
-        vector<vector<int>> dp(n + 1, vector<int>(2, 0));
-        dp[n][0] = dp[n][1] = 0;
+        int dp_0 = 0, dp_1 = 0;
+        int curr_0 = 0, curr_1 = 0;
 
         for(int i = n - 1; i >= 0; i--) {
             for(int j = 0; j < 2; j++) {
                 
                 int buy = 0, sell = 0;
                 if(j == 0) {
-                    int buy1 = -prices[i] + dp[i + 1][1];
-                    int buy_skip = 0 + dp[i + 1][0];
+                    int buy1 = -prices[i] + dp_1;
+                    int buy_skip = 0 + dp_0;
                     buy = max(buy1, buy_skip);
                 }
                 else {
-                    int sell1 = prices[i] + dp[i + 1][0];
-                    int skip_sell = 0 + dp[i + 1][1];
+                    int sell1 = prices[i] + dp_0;
+                    int skip_sell = 0 + dp_1;
                     sell = max(sell1, skip_sell);
                 }
                 
-                dp[i][j] = max(buy, sell);
+                if(j == 0) curr_0 = max(buy, sell);
+                else curr_1 = max(buy, sell);
             }
+
+            dp_0 = curr_0;
+            dp_1 = curr_1;
+
         }
 
-        return dp[0][0];
+        return dp_0;
     }
 };
