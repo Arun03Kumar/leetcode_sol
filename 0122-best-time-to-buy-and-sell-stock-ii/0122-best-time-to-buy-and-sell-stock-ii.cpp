@@ -47,8 +47,37 @@ public:
 
         // Approach 2: memoization
         // we can represent buy as 0 and sell as 1
+        // int n = prices.size();
+        // vector<vector<int>> dp(n + 1, vector<int>(2, -1));
+        // return memoization(prices, 0, 0, dp);
+
+
+        // Approach 3: bottom up / tabulation
+        // bottom up is just copying pasting of memoization no need to think just change the variables
+
         int n = prices.size();
-        vector<vector<int>> dp(n + 1, vector<int>(2, -1));
-        return memoization(prices, 0, 0, dp);
+        vector<vector<int>> dp(n + 1, vector<int>(2, 0));
+        dp[n][0] = dp[n][1] = 0;
+
+        for(int i = n - 1; i >= 0; i--) {
+            for(int j = 0; j < 2; j++) {
+                
+                int buy = 0, sell = 0;
+                if(j == 0) {
+                    int buy1 = -prices[i] + dp[i + 1][1];
+                    int buy_skip = 0 + dp[i + 1][0];
+                    buy = max(buy1, buy_skip);
+                }
+                else {
+                    int sell1 = prices[i] + dp[i + 1][0];
+                    int skip_sell = 0 + dp[i + 1][1];
+                    sell = max(sell1, skip_sell);
+                }
+                
+                dp[i][j] = max(buy, sell);
+            }
+        }
+
+        return dp[0][0];
     }
 };
