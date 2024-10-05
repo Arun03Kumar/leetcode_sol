@@ -1,24 +1,21 @@
 class Solution {
 public:
     bool checkInclusion(string s1, string s2) {
-        // Approach 1: O((n - m) * nlogn)  Space Comp: O(n) // because creating substring
-        // Create a sliding window of size s1.size
-        // then iterate over s2 and for each index create a substring starting from idx upto length s1.size
-        // then compare the created substring with the s1
-        // we can compare by sorting or by creating frequency array
-
-        int m = s1.size(), n = s2.size();
-
-        sort(s1.begin(), s1.end());
-
-        for(int i = 0; i <= n - m; i++) {
-            
-            string substring = s2.substr(i, m);
-            sort(substring.begin(), substring.end());
-
-            if(s1 == substring) return true;
+        if(s1.size() > s2.size()) return false;
+        vector<int> s1_hash(26, 0), s2_hash(26, 0);
+        for(int i = 0; i < s1.size(); i++) {
+            s1_hash[s1[i] - 'a']++;
+            s2_hash[s2[i] - 'a']++;
         }
 
-        return false;
+        int l = 0, r = s1.size();
+        while(r < s2.size()) { 
+            if(s1_hash == s2_hash) return true;
+            s2_hash[s2[r] - 'a']++;
+            s2_hash[s2[l] - 'a']--;
+            l++;
+            r++;
+        }
+        return s1_hash == s2_hash;
     }
 };
