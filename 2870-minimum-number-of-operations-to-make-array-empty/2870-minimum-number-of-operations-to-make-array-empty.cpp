@@ -1,6 +1,10 @@
 class Solution {
 public:
     int minOperations(vector<int>& nums) {
+        // follow a greedy approach 
+        // count the freq of each element
+        // if freq is not divisible by 3 then decrease it by 2 until it became divisble by the
+        // keep the counter count and add into the ans
         int n = nums.size();
         unordered_map<int, int> mp;
 
