@@ -30,7 +30,31 @@ public:
         //     ans += left * right;
         // } 
 
-        vector<int> dp(n + 1, -1);
-        return memoization(n, dp);
+        // Approach 2: Memoization
+        // vector<int> dp(n + 1, -1);
+        // return memoization(n, dp);
+
+        // Approach 3: Top down
+        // vector<int> dp(n + 1, 0);
+        // dp[0] = dp[1] = 1;
+
+        // for(int i = 2; i <= n; i++) {
+        //     for(int j = 1; j <= i; j++) {
+        //         dp[i] += dp[j - 1] * dp[i - j];
+        //     }
+        // }
+
+        // return dp[n];
+
+        // Approach 4: Catalan number
+        // 1 1 2 5 14 42 132 ...
+        // formula:
+        // C(n) = C(n - 1) * ((4*n - 2) / (n + 1))
+
+        long long ans = 1;
+        for(int i = 1; i <= n; i++) {
+            ans = (ans * (4 * i - 2)) / (i + 1);
+        }
+        return (int)ans;
     }
 };
