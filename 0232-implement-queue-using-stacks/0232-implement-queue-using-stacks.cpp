@@ -1,37 +1,60 @@
 class MyQueue {
 public:
-    stack<int> st1, st2;
+    // use two stacks one for input and one for output
+    // when we get a query for input then push the input in to input array
+    // and if query is pop, peek then use output stack, but also check if it is empty, if yes then transfer all elements to output from input stack
+    stack<int> input, output;
 
     MyQueue() {
         
     }
     
     void push(int x) {
-        st1.push(x);
-
-        while(!st1.empty()) {
-            int top = st1.top();
-            st1.pop();
-
-            st2.push(top);
-        } 
-
-        swap(st1, st2);
+        input.push(x);
     }
     
     int pop() {
-       int top = st1.top();
-       st1.pop();
+        if(output.empty()) {
+            while(!input.empty()) {
+                output.push(input.top());
+                input.pop();
+            }
 
-       return top; 
+            int top = output.top();
+            output.pop();
+
+            return top;
+        }
+        else {
+            int top = output.top();
+            output.pop();
+
+            return top;
+        }
     }
     
     int peek() {
-       return st1.top(); 
+        if(output.empty()) {
+            while(!input.empty()) {
+                output.push(input.top());
+                input.pop();
+            }
+
+            int top = output.top();
+            // output.pop();
+
+            return top;
+        }
+        else {
+            int top = output.top();
+            // output.pop();
+
+            return top;
+        }
     }
     
     bool empty() {
-        return st1.empty();
+        return input.empty() && output.empty();
     }
 };
 
