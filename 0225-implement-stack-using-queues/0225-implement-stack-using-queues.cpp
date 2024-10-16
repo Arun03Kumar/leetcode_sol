@@ -1,5 +1,7 @@
 class MyStack {
 public:
+    // Approach 1: Using two queues
+
     // since the element which came last should be on the top
     // but in queue if we push the next element it will came at the last
     // so when we want to push in stack we use second and empty queue and add the element into it so the element will be at the top
@@ -7,24 +9,58 @@ public:
 
     // and remaining operation we can use q1
     // becasue after each push we swap the q1 and q2
+    // queue<int> q1;
+    // queue<int> q2;
+
+    // MyStack() {
+
+    // }
+    
+    // void push(int x) {
+    //     q2.push(x);
+
+    //     while(!q1.empty()) {
+    //         int front = q1.front();
+    //         q1.pop();
+
+    //         q2.push(front);
+    //     }
+
+    //     swap(q1, q2);
+    // }
+    
+    // int pop() {
+    //    int front = q1.front();
+    //    q1.pop();
+
+    //    return front; 
+    // }
+    
+    // int top() {
+    //     return q1.front();
+    // }
+    
+    // bool empty() {
+    //     return q1.empty();
+    // }
+
+    // Approach 2: using 1 queue
     queue<int> q1;
-    queue<int> q2;
 
     MyStack() {
 
     }
     
     void push(int x) {
-        q2.push(x);
+        q1.push(x);
+        int size = q1.size() - 1;
 
-        while(!q1.empty()) {
+        while(size--) {
             int front = q1.front();
             q1.pop();
 
-            q2.push(front);
+            q1.push(front);
         }
-
-        swap(q1, q2);
     }
     
     int pop() {
