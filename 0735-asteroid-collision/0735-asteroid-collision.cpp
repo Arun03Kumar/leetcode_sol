@@ -6,9 +6,15 @@ public:
         for(int i = 0; i < n; i++) {
             if(asteroids[i] > 0) st.push(asteroids[i]);
             else {
-                while(!st.empty() && st.top() <= abs(asteroids[i])) {
+                while(!st.empty() && st.top() > 0 && st.top() < abs(asteroids[i])) {
                     st.pop();
                 }
+
+                if(!st.empty() && st.top() > 0 && st.top() + asteroids[i] == 0) {
+                    st.pop();
+                }
+                else if(st.empty() || st.top() < 0) st.push(asteroids[i]);
+
             }
         }
 
