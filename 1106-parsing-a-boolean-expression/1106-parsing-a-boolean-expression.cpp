@@ -1,38 +1,46 @@
 class Solution {
 public:
-char solveOp(char op, vector<char>& values) {
-        if (op == '!') 
-            return values[0] == 't' ? 'f' : 't';
-    
-        if (op == '&') 
-            return any_of(values.begin(), values.end(), [](char ch) { return ch == 'f'; }) ? 'f' : 't';
-    
-        if (op == '|') 
-            return any_of(values.begin(), values.end(), [](char ch) { return ch == 't'; }) ? 't' : 'f';
-    
-        return 't'; // Unreachable
-    }
-    bool parseBoolExpr(string s) {
-         int n = s.size();
-        stack<char> st;
-        for (int i = 0; i < n; i++) {
-            if (s[i] == ',') continue;
+    bool parseBoolExpr(string expression) {
+        stack<char> op;
+        stack<char> bool_val;
 
-            if (s[i] == ')') {
-                vector<char> values;
-                // Gather all values inside the parentheses
-                while (st.top() != '(') {
-                    values.push_back(st.top());
-                    st.pop();
+        for(char ch: expression) {
+            if(ch == '&' || ch == '|' || ch == '!') op.push(ch);
+            else {
+                if(ch == ')') {
+                    char top_on_op = op.top();
+                    op.pop();
+
+                    bool temp = bool_val.top() == 't' ? true : false;
+                    while(!bool_val.empty() && bool_val.top() != '(') {
+                        if(top_on_op == '&') {
+                            temp &= (bool_val.top() == 'f' ? false : true);
+                        }
+                        else if(top_on_op == '|') {
+                           temp |= (bool_val.top() == 'f' ? false : true); 
+                        }
+                        else {
+                          temp = (bool_val.top() == 'f' ? true : false);
+                          bool_val.pop();
+                          break;
+                        }
+
+                        bool_val.pop();
+                    }
+                    bool_val.pop();
+                    if(temp == true) bool_val.push('t');
+                    else bool_val.push('f');
                 }
-                st.pop();  // Remove '('
-                char op = st.top();
-                st.pop();  // Remove the operator
-                st.push(solveOp(op, values));
-            } else {
-                st.push(s[i]);
+                else if(ch == ',') {
+                    continue;
+                }
+                else {
+                    bool_val.push(ch);
+                }
             }
         }
-        return (st.top() == 't');
+
+        cout << bool_val.top();
+        return bool_val.top() == 'f' ? false : true;
     }
 };
