@@ -26,18 +26,55 @@ public:
     // it is given in the question that first hasNext() would be called if it returns true then next() will be called
     // so during object initialization we have to push all the objects inside the stack but we want numbers from start so we have to append them in reverse direction
     // we are making sure that top of stack always contains an integer value if not then we flatten the nested and make it integer
+
+    // but this way we are creating copy if given array in the constructor ans since it is a class so it will take a lot of memory
+    // to reduce the memory we can store the reference of those objects and then we can access them using arrow
+
+    // // stack<NestedInteger> st;
+
+    // NestedIterator(vector<NestedInteger> &nestedList) {
+    //     int n = nestedList.size();
+    //     for(int i = n - 1; i >= 0; i--) {
+    //         st.push(nestedList[i]);
+    //     }
+    // }
     
-    stack<NestedInteger> st;
+    // int next() {
+    //     int top = st.top().getInteger();
+    //     st.pop();
+
+    //     return top;
+    // }
+    
+    // bool hasNext() {
+    //     if(st.empty()) return false;
+
+    //     while(!st.empty()) {
+    //         NestedInteger top = st.top();
+            
+    //         if(top.isInteger()) return true;
+
+    //         st.pop();
+    //         vector<NestedInteger> vec = top.getList();
+    //         for(int i = vec.size() - 1; i >= 0; i--) {
+    //             st.push(vec[i]);
+    //         }
+    //     }
+
+    //     return false;
+    // }
+
+    stack<NestedInteger*> st;
 
     NestedIterator(vector<NestedInteger> &nestedList) {
         int n = nestedList.size();
         for(int i = n - 1; i >= 0; i--) {
-            st.push(nestedList[i]);
+            st.push(&nestedList[i]);
         }
     }
     
     int next() {
-        int top = st.top().getInteger();
+        int top = st.top() -> getInteger();
         st.pop();
 
         return top;
@@ -47,14 +84,16 @@ public:
         if(st.empty()) return false;
 
         while(!st.empty()) {
-            NestedInteger top = st.top();
+            NestedInteger* top = st.top();
             
-            if(top.isInteger()) return true;
+            if(top -> isInteger()) return true;
 
             st.pop();
-            vector<NestedInteger> vec = top.getList();
+
+            // since interface is returning const hence we have to use &vec to store it
+            vector<NestedInteger> &vec = top -> getList();
             for(int i = vec.size() - 1; i >= 0; i--) {
-                st.push(vec[i]);
+                st.push(&vec[i]);
             }
         }
 
