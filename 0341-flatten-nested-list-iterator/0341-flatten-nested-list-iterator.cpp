@@ -18,33 +18,47 @@
 
 class NestedIterator {
 public:
-vector<int> list;
-int i = 0;
-    NestedIterator(vector<NestedInteger> &nestedList) {
-        flatten(nestedList);
-        // print();
-    }
+    // we have given three interface to find if object is integer or NestedInteger this can be checked with isInteger() function
+    // if it gives true then we can use getInteger to get the integer
+    // we can use getList() to get vector of all objects inside the object
 
-    void flatten(vector<NestedInteger> &nestedList) {
-        for(int j = 0; j < nestedList.size(); j++) {
-            if(nestedList[j].isInteger()) {
-                list.push_back(nestedList[j].getInteger());
-            }else{
-                flatten(nestedList[j].getList());
-            }
+    // for any flattening questions we can use stack or recursion
+    // it is given in the question that first hasNext() would be called if it returns true then next() will be called
+    // so during object initialization we have to push all the objects inside the stack but we want numbers from start so we have to append them in reverse direction
+    // we are making sure that top of stack always contains an integer value if not then we flatten the nested and make it integer
+    
+    stack<NestedInteger> st;
+
+    NestedIterator(vector<NestedInteger> &nestedList) {
+        int n = nestedList.size();
+        for(int i = n - 1; i >= 0; i--) {
+            st.push(nestedList[i]);
         }
     }
-
-    // void print(){
-    //     for(auto x: list) cout << x << " ";
-    // }
     
     int next() {
-        return list[i++];
+        int top = st.top().getInteger();
+        st.pop();
+
+        return top;
     }
     
     bool hasNext() {
-        return i < list.size();
+        if(st.empty()) return false;
+
+        while(!st.empty()) {
+            NestedInteger top = st.top();
+            
+            if(top.isInteger()) return true;
+
+            st.pop();
+            vector<NestedInteger> vec = top.getList();
+            for(int i = vec.size() - 1; i >= 0; i--) {
+                st.push(vec[i]);
+            }
+        }
+
+        return false;
     }
 };
 
