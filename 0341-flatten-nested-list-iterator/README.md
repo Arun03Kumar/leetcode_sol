@@ -1,4 +1,4 @@
-<h2><a href="https://leetcode.com/problems/flatten-nested-list-iterator/?envType=daily-question&envId=2023-10-20">341. Flatten Nested List Iterator</a></h2><h3>Medium</h3><hr><p>You are given a nested list of integers <code>nestedList</code>. Each element is either an integer or a list whose elements may also be integers or other lists. Implement an iterator to flatten it.</p>
+<h2><a href="https://leetcode.com/problems/flatten-nested-list-iterator">341. Flatten Nested List Iterator</a></h2><h3>Medium</h3><hr><p>You are given a nested list of integers <code>nestedList</code>. Each element is either an integer or a list whose elements may also be integers or other lists. Implement an iterator to flatten it.</p>
 
 <p>Implement the <code>NestedIterator</code> class:</p>
 
