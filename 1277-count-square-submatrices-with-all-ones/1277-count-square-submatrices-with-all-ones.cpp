@@ -50,19 +50,67 @@ public:
 
         // Approach 2: memoization
 
+        // int m = matrix.size();
+        // int n = matrix[0].size();
+
+        // vector<vector<int>> dp(m + 1, vector<int>(n + 1, -1));
+        // int ans = 0;
+        // for(int i = 0; i < m; i++) {
+        //     for(int j = 0; j < n; j++) {
+
+        //         if(matrix[i][j] == 1) {
+        //             ans += memoization(matrix, i, j, dp);
+        //         }
+
+        //     }
+        // }
+
+        // return ans;
+
+
+        // Approach 3: bottom-up
+
         int m = matrix.size();
         int n = matrix[0].size();
 
-        vector<vector<int>> dp(m + 1, vector<int>(n + 1, -1));
+        vector<vector<int>> dp(m, vector<int>(n, 0));
         int ans = 0;
+
         for(int i = 0; i < m; i++) {
-            for(int j = 0; j < n; j++) {
+            if(matrix[i][n - 1] == 1) {
+                dp[i][n - 1] = 1;
+                ans++;
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            if(matrix[m - 1][i] == 1) {
+                dp[m - 1][i] = 1;
+                ans++;
+            }
+        }
+
+        for(int i = m - 2; i >= 0; i--) {
+            for(int j = n - 2; j >= 0; j--) {
 
                 if(matrix[i][j] == 1) {
-                    ans += memoization(matrix, i, j, dp);
+                    int right = dp[i][j + 1];
+                    int diag = dp[i + 1][j + 1];
+                    int bottom = dp[i + 1][j];
+
+                    dp[i][j] = 1 + min({right, diag, bottom});
+                    ans += dp[i][j];
                 }
 
             }
+        }
+
+        ans = 0;
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                cout << dp[i][j] << " ";
+                ans += dp[i][j];
+            }
+            cout << endl;
         }
 
         return ans;
