@@ -1,27 +1,32 @@
 class Solution {
 public:
-    void solve(vector<int>& candidates, vector<vector<int>> &ans, vector<int> &temp, int idx, int target) {
+    void backtracking(vector<int> &nums, int idx, int target, vector<int> &curr, vector<vector<int>> &ans) {
         if(target < 0) return;
-        if(target == 0) {
-            ans.push_back(temp);
+
+        if(idx >= nums.size()) {
+            if(target == 0) {
+                ans.push_back(curr);
+            }
             return;
         }
 
-        for(int i = idx; i < candidates.size(); i++) {
-            if(i > idx && candidates[i] == candidates[i - 1]) continue;
+        curr.push_back(nums[idx]);
+        backtracking(nums, idx + 1, target - nums[idx], curr, ans);
 
-            temp.push_back(candidates[i]);
-            solve(candidates, ans, temp, i + 1, target - candidates[i]);
-            temp.pop_back();
-        }
-
+        curr.pop_back();
+        int temp = nums[idx];
+        while(idx < nums.size() && nums[idx] == temp) idx++;
+        backtracking(nums, idx, target, curr, ans);
     }
-    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        vector<vector<int>> ans;
-        vector<int> temp;
 
-        sort(candidates.begin(), candidates.end());
-        solve(candidates, ans, temp, 0, target);
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        // it is simillar to subset sum II problem, when we do not want to include a number then we skip all it occurances
+        
+        vector<vector<int>> ans;
+        vector<int> curr;
+
+        sort(begin(candidates), end(candidates));
+        backtracking(candidates, 0, target, curr, ans);
         return ans;
     }
 };
