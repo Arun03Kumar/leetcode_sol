@@ -18,17 +18,20 @@ public:
         // Approach 2: using rotate function
         // the args in rotate fn are like this
         // rotate(start ptr, position which will become the start, end ptr)
-        int n = s.size();
-        for(int i = 0; i < n; i++) {
-            rotate(begin(s), begin(s) + 1, end(s));
+        // int n = s.size();
+        // for(int i = 0; i < n; i++) {
+        //     rotate(begin(s), begin(s) + 1, end(s));
 
-            if(s == goal) return true;
-        }
-        return false;
+        //     if(s == goal) return true;
+        // }
+        // return false;
 
         
         // Approach 3:
         // if we concatanate the string in itself then it will contains all the rotations in at as a substring
+        s = s + s;
+        if(s.find(goal) != string::npos) return true;
 
+        return false;
     }
 };
