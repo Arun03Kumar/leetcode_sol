@@ -1,29 +1,35 @@
 class Solution {
 public:
-    bool isPalindrome(string s) {
-        int st = 0, e = s.size() - 1;
-        while(st <= e) {
-            if(s[st] != s[e])
-                return false;
-            st++;
-            e--;
+    bool check(string &s, int i, int j) {
+        while(i <= j) {
+            if(s[i] == s[j]) {
+                i++;
+                j--;
+            }
+            else return false;
         }
         return true;
     }
-
     bool validPalindrome(string s) {
-        if(isPalindrome(s)) return true;
-        int st = 0, e = s.size() - 1;
-        string left = s, right = s;
-        while(st <= e) {
-            if(s[st] != s[e]) {
-                left.erase(left.begin() + st);
-                right.erase(right.begin() + e);
-                return isPalindrome(left) || isPalindrome(right);
+        // we use two pointer approach we start from both ends and if characters are same we move to next characters
+        // but if a character is not matched we can check if remaining characters will form palindrome or not because before those string will be palindrome because then only we have came to that point
+
+        int i = 0, j = s.size() - 1;
+        while(i <= j) {
+            if(s[i] == s[j]) {
+                i++;
+                j--;
             }
-            st++;
-            e--;
+            else {
+                bool x = check(s, i + 1, j); // exclude i, and check remaining 
+                bool y = check(s, i, j - 1);// exlcude j and check remaining
+                
+                // since we can remove only at most time hence we are returning directly here, even if it not palindrome after excluding
+                return x || y;
+            }
+
         }
-        return false;
+
+        return true;
     }
 };
