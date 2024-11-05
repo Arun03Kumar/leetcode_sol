@@ -35,7 +35,7 @@ public:
     int subsequencePairCount(vector<int>& nums) {
         // return recursion(nums, 0, 0, 0) - 1;
 
-        int maxVal = 200;
+        int maxVal = *max_element(nums.begin(), nums.end());;
         dp.resize(nums.size(), vector<vector<int>>(maxVal + 1, vector<int>(maxVal + 1, -1)));
         return memoization(nums, 0, 0, 0) % M;
     }
