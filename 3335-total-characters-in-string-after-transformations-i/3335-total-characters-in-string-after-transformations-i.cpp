@@ -8,7 +8,7 @@ public:
             vec[ch - 'a']++;
         }
 
-        for(int x: vec) cout << x << " ";
+        // for(int x: vec) cout << x << " ";
 
         long long prev = -1;
         // int ans = s.size();
@@ -35,7 +35,7 @@ public:
                 // }
             }
             cout << endl;
-            for(int x: vec) cout << x << " ";
+            // for(int x: vec) cout << x << " ";
         }
         int ans = 0;
         for(int x: vec) {
