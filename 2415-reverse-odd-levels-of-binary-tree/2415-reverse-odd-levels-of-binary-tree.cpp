@@ -11,7 +11,7 @@
  */
 class Solution {
 public:
-    TreeNode* solve(TreeNode* root, int level) {
+    TreeNode* bfs(TreeNode* root, int level) {
         queue<TreeNode*> q;
         q.push(root);
         int count = 0;
@@ -48,7 +48,27 @@ public:
         return root;
     }
 
+    void dfs(TreeNode *node1, TreeNode *node2, int level) {
+        if(!node1 || !node2) return;
+
+        if(level % 2 == 1) {
+            int x = node1 -> val;
+            node1 -> val = node2 -> val;
+            node2 -> val = x;
+        }
+
+        dfs(node1 -> left, node2 -> right, level + 1);
+        dfs(node1 -> right, node2 -> left, level + 1);
+    }
+
     TreeNode* reverseOddLevels(TreeNode* root) {
-        return solve(root, 0);
+        // return bfs(root, 0);
+
+
+        // Approach 2: dfs
+        // we can send two nodes in the function which are like left and right pointers
+        // and then swap val in left and right pointers as we did in bfs case
+        dfs(root -> left, root -> right, 1);
+        return root;
     }
 };
