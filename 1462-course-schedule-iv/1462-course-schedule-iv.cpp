@@ -23,6 +23,8 @@ public:
     }
 
     vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
+        // go to recursively and return the dependency set of that node when dfs ends;
+        
         unordered_map<int, vector<int>> adj;
         for(int i = 0; i < prerequisites.size(); i++) {
             int u = prerequisites[i][0];
@@ -41,13 +43,13 @@ public:
             }
         }
 
-        for(auto x: indirect) {
-            cout << x.first << "->";
-            for(auto y: x.second) {
-                cout << y << " ";
-            }
-            cout << endl;
-        }
+        // for(auto x: indirect) {
+        //     cout << x.first << "->";
+        //     for(auto y: x.second) {
+        //         cout << y << " ";
+        //     }
+        //     cout << endl;
+        // }
 
         vector<bool> ans;
 
