@@ -15,10 +15,8 @@ public:
             if(s[i] != s[j]) {
                 return solve(s, i + 1, j) || solve(s, i, j - 1);
             }
-            else {
-                i++;
-                j--;
-            }
+           i++;
+           j--;
         }
 
         return true;
