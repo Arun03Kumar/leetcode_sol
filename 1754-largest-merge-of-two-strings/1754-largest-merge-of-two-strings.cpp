@@ -29,11 +29,22 @@ public:
         int m = word1.size(), n = word2.size();
 
         while(i < m && j < n) {
-            if(word1.compare(i, m - i, word2, j, n - j) > 0) {
+            if(word1[i] > word2[j]) ans.push_back(word1[i++]);
+            else if(word1[i] < word2[j]) ans.push_back(word2[j++]);
+            else {
+                if(word1.compare(i, m - i, word2, j, n - j) > 0) {
                 ans.push_back(word1[i++]);
             }
             else ans.push_back(word2[j++]);
+            }
         }
+
+        // while(i < m && j < n) {
+        //     if(word1.compare(i, m - i, word2, j, n - j) > 0) {
+        //         ans.push_back(word1[i++]);
+        //     }
+        //     else ans.push_back(word2[j++]);
+        // }
 
         return ans + word1.substr(i) + word2.substr(j);
     }
