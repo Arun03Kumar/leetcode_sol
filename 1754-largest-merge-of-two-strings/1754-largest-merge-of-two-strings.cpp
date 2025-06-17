@@ -4,10 +4,14 @@ public:
         string ans = "";
         int i = 0, j = 0;
         while(i < word1.size() && j < word2.size()) {
-            if(word1.substr(i) >= word2.substr(j)) {
-                ans.push_back(word1[i++]);
+            if(word1[i] > word2[j]) ans.push_back(word1[i++]);
+            else if(word1[i] < word2[j]) ans.push_back(word2[j++]);
+            else {
+                if(word1.substr(i) >= word2.substr(j)) {
+                    ans.push_back(word1[i++]);
+                }
+                else ans.push_back(word2[j++]);
             }
-            else ans.push_back(word2[j++]);
         }
 
         while(i < word1.size()) ans.push_back(word1[i++]);
