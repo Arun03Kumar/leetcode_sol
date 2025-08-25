@@ -11,24 +11,35 @@
  */
 class Solution {
 public:
-    TreeNode* solve(int prestart, int poststart, int preend, vector<int>& preorder, vector<int>& postorder,
-                    unordered_map<int, int>& mp) {
-        if(prestart > preend) {
-            return NULL;
+    TreeNode* solve(vector<int>& preorder, int preStart, int preEnd, vector<int>& postorder, int postStart, int postEnd, unordered_map<int, int> mp) {
+        // Base case 1: If the range is empty, there is no node.
+        if (preStart > preEnd) {
+            return nullptr;
         }
 
-        TreeNode* root = new TreeNode(preorder[prestart]);
-        if(prestart == preend) {
+        // 1. The first element in the preorder range is the root of the current subtree.
+        TreeNode* root = new TreeNode(preorder[preStart]);
+        
+        // Base case 2: If there's only one element, it's a leaf node. Return it.
+        if (preStart == preEnd) {
             return root;
         }
-        int nextNode = preorder[prestart+1]; //root of left subtree
 
-        int j = mp[nextNode];
+        // 2. The next element in preorder is the root of the left subtree.
+        int leftSubtreeRootVal = preorder[preStart + 1];
+        
+        // 3. Find the index of the left subtree's root in the postorder traversal.
+        int leftSubtreeEndIndexPost = mp[leftSubtreeRootVal];
+        
+        // 4. Calculate the number of nodes in the left subtree.
+        int leftSubtreeSize = leftSubtreeEndIndexPost - postStart + 1;
 
-        int num = j - poststart + 1;
-
-        root->left = solve(prestart+1, poststart, prestart+num, preorder, postorder, mp);
-        root->right = solve(prestart+num+1, j+1, preend, preorder, postorder, mp);
+        // 5. Recursively build the left and right subtrees.
+        // Left child:
+        root->left = solve(preorder, preStart + 1, preStart + leftSubtreeSize, postorder, postStart, leftSubtreeEndIndexPost, mp);
+        
+        // Right child:
+        root->right = solve(preorder, preStart + leftSubtreeSize + 1, preEnd, postorder, leftSubtreeEndIndexPost + 1, postEnd - 1, mp);
 
         return root;
     }
@@ -40,6 +51,6 @@ public:
         for(int i = 0; i < n; i++) {
             mp[postorder[i]] = i;
         }
-        return solve(0, 0, n-1, preorder, postorder, mp);
+        return solve(preorder, 0, preorder.size() - 1, postorder, 0, postorder.size() - 1, mp);
     }
 };
