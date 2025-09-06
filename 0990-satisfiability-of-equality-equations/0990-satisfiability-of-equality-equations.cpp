@@ -1,73 +1,47 @@
 class Solution {
 public:
-    vector<int> parent;
-    vector<int> size;
-
-    int find(int node) {
-        if(parent[node] == node) return node;
-
-        return parent[node] = find(parent[node]);
+    vector<int> parent, rank;
+    int find(int x) {
+        if(parent[x] == x) return x;
+        return parent[x] = find(parent[x]);
     }
 
-    void Union(int node1, int node2) {
-        int par_node1 = find(node1);
-        int par_node2 = find(node2);
+    void Union(int x, int y) {
+        int par_x = find(x);
+        int par_y = find(y);
 
-        if(par_node1 == par_node2) return;
+        if(par_x == par_y) return;
 
-        if(size[par_node1] > size[par_node2]) {
-
-            parent[par_node2] = par_node1;
-            size[par_node1] += size[par_node2];
-
-        }
-        else if(size[par_node2] > size[par_node1]) {
-
-            parent[par_node1] = par_node2;
-            size[par_node2] += size[par_node1];
-
-        }
-        else{
-
-            parent[par_node2] = par_node1;
-            size[par_node1] += size[par_node2];            
-
+        if(rank[par_x] > rank[par_y]) parent[par_y] = par_x;
+        else if(rank[par_x] < rank[par_y]) parent[par_x] = par_y;
+        else {
+            parent[par_x] = par_y;
+            rank[par_y]++;
         }
     }
 
     bool equationsPossible(vector<string>& equations) {
         parent.resize(26);
-        size.resize(26, 1);
+        rank.resize(26, 0);
 
-        for(int i = 0; i < 26; i++) {
-            parent[i] = i;
+        for(int i = 0; i < 26; i++) parent[i] = i;
+
+        for(string &s: equations) {
+            int x = s[0] - 'a';
+            int y = s[3] - 'a';
+
+            if(s[1] == '=') Union(x, y);
+        }
+        for(string &s: equations) {
+            int x = s[0] - 'a';
+            int y = s[3] - 'a';
+
+            int par_x = find(x);
+            int par_y = find(y);
+
+            if(s[1] == '!' && par_x == par_y) return false;
         }
 
-        for(string x: equations) {
-
-            if(x[1] == '=') {
-                Union(x[0] - 'a', x[3] - 'a');
-            }
-
-        }
-
-        for(string x: equations) {
-
-            if(x[1] == '!') {
-
-                char var1 = x[0] - 'a';
-                char var2 = x[3] - 'a';
-
-                int par_var1 = find(var1);
-                int par_var2 = find(var2);
-
-                if(par_var1 == par_var2) {
-                    return false;
-                }
-
-            }
-
-        }
         return true;
     }
 };
