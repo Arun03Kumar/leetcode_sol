@@ -2,12 +2,10 @@ class Solution {
 public:
     void rotate(vector<int>& nums, int k) {
         int n = nums.size();
-        vector<int> newNums(n);
+        if(k == 0) return;
         k = k % n;
-
-        for(int i = 0; i < n; i++) {
-            newNums[(i + k + n) % n] = nums[i];
-        }
-        nums = newNums;
+        reverse(nums.begin(), nums.end());
+        reverse(nums.begin(), nums.begin() + k);
+        reverse(nums.begin() + k, nums.end());
     }
 };
