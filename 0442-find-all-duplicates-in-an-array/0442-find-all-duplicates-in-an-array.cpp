@@ -2,15 +2,10 @@ class Solution {
 public:
     vector<int> findDuplicates(vector<int>& nums) {
         vector<int> ans;
-        int n = nums.size();
-
-        for(int i = 0; i < n; i++) {
-            int idx = abs(nums[i]) - 1;
-
-            if(nums[idx] < 0) ans.push_back(abs(nums[i]));
-            else {
-                nums[idx] *= -1;
-            }
+        for(int i = 0; i < nums.size(); i++) {
+            int x = abs(nums[i]) - 1;
+            if(nums[x] < 0) ans.push_back(abs(nums[i]));
+            else nums[x] *= -1;
         }
 
         return ans;
