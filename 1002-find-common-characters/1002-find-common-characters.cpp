@@ -1,22 +1,25 @@
 class Solution {
 public:
     vector<string> commonChars(vector<string>& words) {
-        char ch = 'a';
-        vector<string> ans;
-        while(ch <= 'z') {
-            int cnt = INT_MAX;
-            for(string x: words) {
-                int c = count(begin(x), end(x), ch);
-                cnt = min(cnt, c);
+        vector<int> min_freq(26, INT_MAX);
+        for(string &x: words) {
+            vector<int> freq(26, 0);
+            for(char ch: x) {
+                freq[ch - 'a']++;
             }
 
-            if(cnt != INT_MAX) {
-                for(int i = 0; i < cnt; i++) {
-                    ans.push_back(string(1, ch));
-                }
+            for(int i = 0; i < 26; i++) {
+                min_freq[i] = min(min_freq[i], freq[i]);
             }
-            ch++;
         }
+
+        vector<string> ans;
+        for(int i = 0; i < 26; i++) {
+            for(int j = 0; j < min_freq[i]; j++) {
+                ans.push_back(string(1, 'a' + i));
+            }
+        }
+
         return ans;
     }
 };
