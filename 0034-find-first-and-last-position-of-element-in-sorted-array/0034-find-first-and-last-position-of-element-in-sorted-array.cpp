@@ -1,18 +1,13 @@
 class Solution {
 public:
     vector<int> searchRange(vector<int>& nums, int target) {
-        vector<int> ans;
-        int lb = lower_bound(nums.begin(), nums.end(), target) - nums.begin();
-        int ub = upper_bound(nums.begin(), nums.end(), target) - nums.begin();
-        cout << lb << " " << ub;
-        if(lb < nums.size() && nums[lb] == target) {
-            ans.push_back(lb);
-            ans.push_back(ub - 1);
-            
-        }
-        else {
-            ans.push_back(-1);
-            ans.push_back(-1);
+        auto it = lower_bound(begin(nums), end(nums), target);
+        auto it2 = upper_bound(begin(nums), end(nums), target);
+
+        vector<int> ans = {-1, -1};
+        if(it != end(nums) && *it == target) {
+            ans[0] = it - begin(nums);
+            ans[1] = it2 - begin(nums) - 1;
         }
         return ans;
     }
