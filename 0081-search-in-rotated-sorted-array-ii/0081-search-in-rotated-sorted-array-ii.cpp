@@ -10,11 +10,11 @@ public:
                 r--;
             }
             else if(nums[l] <= nums[mid]) {
-                if(target >= nums[l] && target < nums[mid]) r = mid - 1;
+                if(target >= nums[l] && target <= nums[mid]) r = mid - 1;
                 else l = mid + 1;
             }
             else {
-                if(target > nums[mid] && target <= nums[r]) l = mid + 1;
+                if(target >= nums[mid] && target <= nums[r]) l = mid + 1;
                 else r = mid - 1;
             }
         }
