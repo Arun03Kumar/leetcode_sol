@@ -6,14 +6,8 @@ public:
         while(l < r) {
             int mid = l + (r - l) / 2;
 
-            if(mid % 2 == 0) {
-                if(nums[mid] == nums[mid + 1]) l = mid + 2;
-                else r = mid;
-            }
-            else {
-                if(nums[mid] == nums[mid - 1]) l = mid + 1;
-                else r = mid;
-            }
+            if(nums[mid] == nums[mid ^ 1]) l = mid + 1;
+            else r = mid;
         }
         return nums[l];
     }
