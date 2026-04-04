@@ -1,37 +1,43 @@
 class Solution {
 public:
-    bool possible(vector<int> arr, int day, int m, int k) {
-        int count = 0, no_of_bloom = 0;
-        for(int i = 0; i < arr.size(); i++) {
-            if(arr[i] <= day) {
-                count++;
-            }
-            else {
-                no_of_bloom += (count / k);
-                count = 0;
-            }
+    int find_adj(vector<int> &arr, int mid, int k) {
+        int count = 0;
+    int ans = 0;
+
+    for(int i = 0; i < arr.size(); i++) {
+        if(arr[i] <= mid) {
+            count++;
+        } else {
+            ans += count / k;
+            count = 0;
         }
-        no_of_bloom += (count / k);;
-        return no_of_bloom >= m;
     }
+
+    // leftover segment
+    ans += count / k;
+
+    return ans;
+    }
+
     int minDays(vector<int>& bloomDay, int m, int k) {
-        long long mul = m * 1LL * k * 1LL;
-        if(bloomDay.size() < mul) return -1;
-        int mini = INT_MAX, maxi = INT_MIN;
-        for(int x: bloomDay) {
-            mini = min(mini, x);
-            maxi = max(maxi, x);
-        }
-        int low = mini, high = maxi;
-        while(low <= high) {
-            int mid = (low + high) / 2;
-            if(possible(bloomDay, mid, m, k)) {
-                high = mid - 1;
+        int l = 0;
+        int r = *max_element(begin(bloomDay), end(bloomDay));
+        int ans = -1;
+
+        while(l <= r) {
+            int mid = l + (r - l) / 2;
+            // cout << mid << " mid\n";
+
+            int val = find_adj(bloomDay, mid, k);
+            // cout << val << " val\n";
+            if(val >= m) {
+                ans = mid;
+                r = mid - 1;
             }
             else {
-                low = mid + 1;
+                l = mid + 1;
             }
         }
-        return low;
+        return ans;
     }
 };
