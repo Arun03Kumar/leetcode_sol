@@ -8,7 +8,7 @@ public:
             int mid = (left + right) / 2;
 
             int max_in_col_idx = 0;
-            for(int i = 1; i < m; i++) {
+            for(int i = 0; i < m; i++) {
                 if(mat[i][mid] > mat[max_in_col_idx][mid]) {
                     max_in_col_idx = i;
                 }
@@ -16,10 +16,10 @@ public:
             int left_val = (mid > 0) ? mat[max_in_col_idx][mid - 1] : -1;
             int right_val = (mid < n - 1) ? mat[max_in_col_idx][mid + 1] : -1;
 
-            if(mat[max_in_col_idx][mid] > left && mat[max_in_col_idx][mid] > right) {
+            if(mat[max_in_col_idx][mid] > left_val && mat[max_in_col_idx][mid] > right_val) {
                 return {max_in_col_idx, mid};
             }
-            else if(left > mat[max_in_col_idx][mid]) right = mid - 1;
+            else if(left_val > mat[max_in_col_idx][mid]) right = mid - 1;
             else left = mid + 1;
         }
         return {-1, -1};
