@@ -3,33 +3,25 @@ public:
     vector<int> findPeakGrid(vector<vector<int>>& mat) {
         int m = mat.size(), n = mat[0].size();
 
-        int row = 0, col = 0;
-        vector<int> ans;
-        while(row < m && col < n) {
-            int left = col > 0 ? mat[row][col - 1] : -1;
-            int right = col < n - 1 ? mat[row][col + 1] : -1;
-            int top = row > 0 ? mat[row - 1][col] : -1;
-            int bottom = row < m - 1 ? mat[row + 1][col] : -1;
-            int curr = mat[row][col];
-            
-            if(curr > left && curr > right && curr > top && curr > bottom) {
-                ans.push_back(row);
-                ans.push_back(col);
-                break;
+        int left = 0, right = n - 1;
+        while(left <= right) {
+            int mid = (left + right) / 2;
+
+            int max_in_col_idx = 0;
+            for(int i = 1; i < m; i++) {
+                if(mat[i][mid] > mat[max_in_col_idx][mid]) {
+                    max_in_col_idx = i;
+                }
             }
-            else {
-                if(left > curr && left > right && left > top && left > bottom) {
-                    col = col - 1;
-                }
-                else if(right > curr && right > left && right > top && right > bottom) {
-                    col = col + 1;
-                }
-                else if(top > curr && top > left && top > right && top > bottom) {
-                    row = row - 1;
-                }
-                else row = row + 1;
-            } 
-        }   
-        return ans;
+            int left_val = (mid > 0) ? mat[max_in_col_idx][mid - 1] : -1;
+            int right_val = (mid < n - 1) ? mat[max_in_col_idx][mid + 1] : -1;
+
+            if(mat[max_in_col_idx][mid] > left && mat[max_in_col_idx][mid] > right) {
+                return {max_in_col_idx, mid};
+            }
+            else if(left > mat[max_in_col_idx][mid]) right = mid - 1;
+            else left = mid + 1;
+        }
+        return {-1, -1};
     }
 };
