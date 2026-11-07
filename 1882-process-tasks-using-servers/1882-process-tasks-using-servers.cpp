@@ -2,9 +2,9 @@ class Solution {
 public:
     vector<int> assignTasks(vector<int>& servers, vector<int>& tasks) {
 
-        priority_queue<vector<int>,
-            vector<vector<int>>,
-            greater<vector<int>>> pq, wait;
+        priority_queue<vector<long long>,
+            vector<vector<long long>>,
+            greater<vector<long long>>> pq, wait;
 
         for(int i = 0; i < servers.size(); i++) {
             pq.push({0, servers[i], i});
@@ -19,36 +19,33 @@ public:
 
             o_time = max(o_time, (long long)i);
 
-            if(pq.empty() && !wait.empty()) {
-                o_time = max(o_time, (long long)wait.top()[0]);
+            // If no server is available, jump to earliest free time
+            if(pq.empty()) {
+                o_time = wait.top()[0];
             }
 
-            while(!wait.empty() && o_time >= wait.top()[0]) {
+            // Move all available servers back
+            while(!wait.empty() && wait.top()[0] <= o_time) {
 
-                pq.push({
-                    0,
-                    wait.top()[1],
-                    wait.top()[2]
-                });
-
+                auto curr = wait.top();
                 wait.pop();
+
+                pq.push({0, curr[1], curr[2]});
             }
 
-            if(!pq.empty()) {
+            // Assign task
+            auto curr = pq.top();
+            pq.pop();
 
-                auto curr = pq.top();
-                pq.pop();
+            ans[i] = curr[2];
 
-                ans[i] = curr[2];
+            wait.push({
+                o_time + tasks[i],
+                curr[1],
+                curr[2]
+            });
 
-                wait.push({
-                    (int)(o_time + tasks[i]),
-                    curr[1],
-                    curr[2]
-                });
-
-                i++;
-            }
+            i++;
         }
 
         return ans;
