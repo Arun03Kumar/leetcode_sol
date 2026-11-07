@@ -1,43 +1,54 @@
 class Solution {
 public:
-    typedef pair<int, int> P;
     vector<int> assignTasks(vector<int>& servers, vector<int>& tasks) {
-        int n = servers.size();
-        int m = tasks.size();
 
-        priority_queue<P, vector<P>, greater<P>> pq;
-        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> wait;
-        for(int i = 0; i < n; i++) {
-            pq.push({servers[i], i});
-        } 
+        priority_queue<vector<int>,
+            vector<vector<int>>,
+            greater<vector<int>>> pq, wait;
 
-        int idx = 0;
-        int curr_time = 0;
+        for(int i = 0; i < servers.size(); i++) {
+            pq.push({0, servers[i], i});
+        }
 
-        vector<int> ans(m);
-        
-        while(idx < m) {
-            if (pq.empty() && !wait.empty()) {
-                curr_time = wait.top()[0];
+        int i = 0;
+        long long o_time = 0;
+
+        vector<int> ans(tasks.size());
+
+        while(i < tasks.size()) {
+
+            o_time = max(o_time, (long long)i);
+
+            if(pq.empty() && !wait.empty()) {
+                o_time = max(o_time, (long long)wait.top()[0]);
             }
 
-            while(!wait.empty() && wait.top()[0] <= curr_time) {
-                auto top = wait.top();
-                pq.push({top[1], top[2]});
+            while(!wait.empty() && o_time >= wait.top()[0]) {
+
+                pq.push({
+                    0,
+                    wait.top()[1],
+                    wait.top()[2]
+                });
+
                 wait.pop();
             }
 
-            while (idx < m && curr_time >= idx && !pq.empty()) {
-                auto top = pq.top();
+            if(!pq.empty()) {
+
+                auto curr = pq.top();
                 pq.pop();
-                ans[idx] = top.second;
 
-                wait.push({curr_time + tasks[idx], top.first, top.second});
-                idx++;
+                ans[i] = curr[2];
+
+                wait.push({
+                    (int)(o_time + tasks[i]),
+                    curr[1],
+                    curr[2]
+                });
+
+                i++;
             }
-
-            curr_time++;
-
         }
 
         return ans;
