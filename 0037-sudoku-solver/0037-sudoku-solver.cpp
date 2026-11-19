@@ -4,18 +4,23 @@ public:
         for(int i = 0; i < 9; i++) {
             if(board[row][i] == ch) return false;
             if(board[i][col] == ch) return false;
+
+            int r = row / 3 * 3 + i / 3;
+            int c = col / 3 * 3 + i % 3;
+
+            if(board[r][c] == ch) return false;
         }
 
-        int c_t_row = row / 3 * 3;
-        int c_t_col = col / 3 * 3;
+        // int c_t_row = row / 3 * 3;
+        // int c_t_col = col / 3 * 3;
 
-        for(int j = 0; j < 3; j++) {
-            for(int k = 0; k < 3; k++) {
-                if(board[c_t_row + j][c_t_col + k] == ch) {
-                    return false;
-                }
-            }
-        } 
+        // for(int j = 0; j < 3; j++) {
+        //     for(int k = 0; k < 3; k++) {
+        //         if(board[c_t_row + j][c_t_col + k] == ch) {
+        //             return false;
+        //         }
+        //     }
+        // } 
 
         return true;
     }
