@@ -1,22 +1,40 @@
 class ProductOfNumbers {
 public:
-    vector<int> nums;
+    vector<int> prefix, count;
     ProductOfNumbers() {
-        
+        prefix.push_back(1);
+        count.push_back(0);
     }
+
+    // 2 3 5 4
+    // 2 6 30 120
     
     void add(int num) {
-        nums.push_back(num);
+        // nums.push_back(num);
+        if(num == 0) {
+            count.push_back(count.back() + 1);
+            prefix.push_back(num);
+        } 
+        else if(prefix.back() == 0) {
+            prefix.push_back(num);
+            count.push_back(count.back());
+        }
+        else {
+            prefix.push_back(num * prefix.back());
+            count.push_back(count.back());
+        }
     }
     
     int getProduct(int k) {
-        int ans = 1;
-        int size = nums.size() - 1;
-        for(int i = size; i >= 0; i--) {
-            if(i == size - k) return ans;
-            ans *= nums[i];
-        }
-        return ans;
+        // for(int x: prefix) cout << x << " ";
+        // cout << endl;
+        // for(int x: count) cout << x << " ";
+        // cout << endl;
+        int idx = prefix.size() - k - 1;
+        if(count.back() - count[idx] > 0) return 0;
+        
+        if(prefix[idx] == 0) return prefix.back();
+        return prefix.back() / prefix[idx];
     }
 };
 
