@@ -11,20 +11,18 @@
  */
 class Solution {
 public:
-    bool helper(TreeNode* p, TreeNode* q) {
-        if(!p && !q) return true;
-        if(!p || !q) return false;
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        
+        if(p == nullptr && q == nullptr) return true;
+        if(p == nullptr || q == nullptr) return false;
+
         if(p -> val == q -> val) {
             bool x = isSameTree(p -> left, q -> left);
             bool y = isSameTree(p -> right, q -> right);
-            return x && y;
+
+            if(x && y) return true;
         }
-        else {
-            return false;
-        }
-    }
-    bool isSameTree(TreeNode* p, TreeNode* q) {
-        // check if both nodes are null pointer then it is valid but if only one is null pointer then it is invalid
-        return helper(p, q);
+        return false;
+
     }
 };
